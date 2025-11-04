@@ -1,9 +1,16 @@
 import * as React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import Index from '../index';
 
 jest.spyOn(Alert, 'alert');
+
+const mockPush = jest.fn();
+jest.mock('expo-router', () => ({
+    useRouter: () => ({
+        push: mockPush,
+    }),
+}));
 
 describe('Index Screen', () => {
     it('renders correctly', () => {
@@ -100,6 +107,14 @@ describe('Index Screen', () => {
             expect(Alert.alert).toHaveBeenCalledWith("Validation Result", 'Password must contain at least one uppercase letter.\nPassword must contain at least one lowercase letter.\nPassword must contain at least one letter.');
         });
     })
+
+    describe('Navigation to Register Screen', () => {
+        it('navigates to Register screen on button press', async () => {
+            render(<Index />);
+            fireEvent.press(screen.getByText('Register'));
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith({ pathname: "./register" });
+            });
+        });
+    });
 });
-
-
