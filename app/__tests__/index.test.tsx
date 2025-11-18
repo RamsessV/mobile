@@ -47,12 +47,14 @@ describe('Index Screen', () => {
     });
 
     describe('Email validation', () => {
-        it('accepts valid email formats', () => {
+        it('accepts valid email formats', async () => {
             render(<Index />);
             fireEvent.changeText(screen.getByPlaceholderText('Type your password here'), 'ValidPass1!');
             fireEvent.changeText(screen.getByPlaceholderText('Type your email here'), 'valid@valid.email');
             fireEvent.press(screen.getByText('Submit'));
-            expect(Alert.alert).toHaveBeenCalledWith("Validation Result", 'Success!.');
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith({ pathname: "./home" });
+            });
         });
         it('rejects invalid email formats', () => {
             render(<Index />);
@@ -64,12 +66,14 @@ describe('Index Screen', () => {
     });
 
     describe('Password Validation', () => {
-        it('accepts valid passwords formats', () => {
+        it('accepts valid passwords formats', async () => {
             render(<Index />);
             fireEvent.changeText(screen.getByPlaceholderText('Type your password here'), 'ValidPass1!');
             fireEvent.changeText(screen.getByPlaceholderText('Type your email here'), 'valid@valid.email');
             fireEvent.press(screen.getByText('Submit'));
-            expect(Alert.alert).toHaveBeenCalledWith("Validation Result", 'Success!.');
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith({ pathname: "./home" });
+            });
         });
         it('rejects passwords without uppercase', () => {
             render(<Index />);
