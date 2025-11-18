@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styled } from 'styled-components/native';
@@ -40,6 +41,14 @@ import { styled } from 'styled-components/native';
 export default function Index() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  const onPressRegister = () => {
+      router.push({
+        pathname: "./register"
+      });
+  }
+  
 
   const showAlert = (message: string): void => {
     Alert.alert("Validation Result", message);
@@ -85,7 +94,13 @@ export default function Index() {
       errors += 'Password must contain at least one letter.\n';
     }
 
-    showAlert(errors ? errors.trim() : 'Success!.');
+    if (errors) {
+      showAlert(errors.trim());
+    } else {
+      router.push({
+        pathname: "./home"
+      });
+    }
   };
 
   return (
@@ -95,6 +110,9 @@ export default function Index() {
       <Input placeholder="Type your password here" value={password} onChangeText={setPassword} secureTextEntry={true} />
       <Btn  onPress={handleClick}>
         <Txt>Submit</Txt>
+      </Btn>
+      <Btn  onPress={onPressRegister}>
+        <Txt>Register</Txt>
       </Btn>
     </MainContainer>
   );
