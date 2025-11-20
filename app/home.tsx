@@ -15,7 +15,7 @@ export default function Home() {
 
     useEffect(() => {
         getMusicData()
-        .then(data => setArtists(data))
+        .then(setArtists)
         .catch(error => console.error("Error fetching music data:", error));
     }, []);
 
